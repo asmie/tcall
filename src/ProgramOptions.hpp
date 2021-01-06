@@ -20,7 +20,9 @@
 #ifndef PROGRAMOPTIONS_HPP_
 #define PROGRAMOPTIONS_HPP_
 
-#include <map>
+#include <vector>
+#include <string>
+#include <string_view>
 
 typedef enum
 {
@@ -28,29 +30,72 @@ typedef enum
 	LongOption = 0x2,
 	HelpOption = 0x4,
 	ParamRequired = 0x8,
-	CanBeRepeated = 0x16
+	CanBeRepeated = 0x16,
+	MandatoryOption = 0x32
 } ProgramOptionFlag;
+
+typedef struct {
+	bool wasFound{false};
+	bool hasError{false};
+	bool argumentFound{false};
+	bool argumentError{false};
+
+	std::string_view argumentValue{};
+} ProgramOptionResult;
+
+typedef struct ProgramOptionStructure
+{
+	std::string_view option;
+	std::string_view help;
+	ProgramOptionFlag flags;
+	std::string_view alternativeOption;
+
+	bool operator==(const ProgramOptionStructure &rhs)
+	{
+		return (option.compare(rhs.option) == 0);
+	}
+
+	ProgramOptionResult result;
+} ProgramOption;
 
 
 class ProgramOptions
 {
 public:
-	int registerOption(const char *option, const char *help, ProgramOptionFlag flags, const char *altoption = nullptr);
-	int unregisterOption(const char *option);
+	int registerOption(std::string_view  option, std::string_view help, ProgramOptionFlag flags, std::string_view altoption = std::string_view());
+	int registerOption(ProgramOption option);
+	int registerOptions(std::vector<ProgramOption> options);
+	int unregisterOption(std::string_view option);
+	int unregisterOption(ProgramOption option);
 
 	int parseProgramOptions(unsigned int argc, const char **argv);
 
-	const char *getDelimeter() const;
-	int setDelimeter(const char *delimeter);
+	std::string_view getLongOptionDelimeter() const
+	{
+		return (longOptionDelimeter_);
+	}
+
+	void setLongOptionDelimeter(std::string_view delimeter)
+	{
+		longOptionDelimeter_ = delimeter;
+	}
+
+	std::string_view getShortOptionDelimeter() const
+	{
+		return (shortOptionDelimeter_);
+	}
+
+	void setShortOptionDelimeter(std::string_view delimeter)
+	{
+		shortOptionDelimeter_ = delimeter;
+	}
 
 private:
+	std::vector<ProgramOption> options_;
 
-	std::map<const char*, const char*> parsedOptions;
-
-	char *delimeter;
+	std::string_view longOptionDelimeter_;
+	std::string_view shortOptionDelimeter_;
 };
-
-
 
 
 #endif /* PROGRAMOPTIONS_HPP_ */
