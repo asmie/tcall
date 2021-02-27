@@ -20,6 +20,7 @@
 #ifndef PROGRAMOPTIONS_HPP_
 #define PROGRAMOPTIONS_HPP_
 
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <string_view>
@@ -91,7 +92,7 @@ public:
 	}
 
 private:
-	std::vector<ProgramOption> options_;
+	std::unordered_map <std::string_view, ProgramOption> options_;
 
 	std::string_view longOptionDelimeter_;
 	std::string_view shortOptionDelimeter_;

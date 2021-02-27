@@ -1,0 +1,37 @@
+/**
+ *  @file   tcall_config.h
+ *  @brief  Main include file with generated configuration.
+ *
+ *  @author Piotr "asmie" Olszewski     asmie@asmie.pl
+ *
+ *  @date   2021.02.27
+ *
+ */
+
+#ifndef GENERATED_TCALL_H_
+#define GENERATED_TCALL_H_
+
+// Versioning
+#define TCALL_VERSION_MAJOR		@TCALL_VERSION_MAJOR@
+#define TCALL_VERSION_MINOR		@TCALL_VERSION_MINOR@
+#define TCALL_VERSION_REV		@TCALL_VERSION_REV@
+
+// System header checks
+#cmakedefine	TCALL_SYSTEM_HAVE_CSTDLIB
+
+// System function checks
+#cmakedefine  	TCALL_SYSTEM_HAVE_EXIT_SUCCESS
+
+/* Automatic checks for critical components. 
+ Not all above libraries and files are needed, however some of them are really mandatory.
+ Abort if they are not present.
+ 
+ To be honest, those checks will fail only under some abnormal compiler which is not compatible with
+ the mainstream ones.
+*/
+
+#ifndef TCALL_SYSTEM_HAVE_CSTDLIB
+#error "tcall has to use standard C library!"
+#endif
+
+#endif /* GENERATED_TCALL_H_ */

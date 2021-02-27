@@ -9,12 +9,13 @@
  */
 
 #include <algorithm>
+#include <string_view>
 
 #include "ProgramOptions.hpp"
 
 int ProgramOptions::registerOption(std::string_view  option, std::string_view help, ProgramOptionFlag flags, std::string_view altoption)
 {
-	ProgramOption newOption = { .option = option, .help = help, .flags = flags, .alternativeOption = altoption};
+	ProgramOption newOption = { .option = option, .help = help, .flags = flags, .alternativeOption = altoption, .result = {false, false, false, false, ""} };
 
 	return (registerOption(newOption));
 }
@@ -23,10 +24,10 @@ int ProgramOptions::registerOption(ProgramOption option)
 {
 	int retVal = 0;
 
-	auto it = std::find(options_.begin(), options_.end(), option);
+	auto it = options_.find(option.option);
 
 	if (it == options_.end() && !option.option.empty())
-		options_.push_back(option);
+		options_[option.option] = option;
 	else
 		retVal = -1;
 
@@ -46,7 +47,9 @@ int ProgramOptions::registerOptions(std::vector<ProgramOption> options)
 
 int ProgramOptions::unregisterOption(std::string_view option)
 {
-	ProgramOption optionToDelete = { .option = option };
+	ProgramOption optionToDelete{};
+
+	optionToDelete.option = option;
 
 	return (unregisterOption(optionToDelete));
 }
@@ -55,7 +58,7 @@ int ProgramOptions::unregisterOption(ProgramOption option)
 {
 	int retVal = 0;
 
-	auto it = std::find(options_.begin(), options_.end(), option);
+	auto it = options_.find(option.option);
 
 	if (it != options_.end())
 		options_.erase(it);
@@ -71,7 +74,11 @@ int ProgramOptions::parseProgramOptions(unsigned int argc, const char **argv)
 
 	for (unsigned int i = 1; i < argc; i++)
 	{
+		auto it = options_.find(argv[i]);
+		if (it != options_.end())
+		{
 
+		}
 	}
 
 	return (retVal);
