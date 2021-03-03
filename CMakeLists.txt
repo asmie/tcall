@@ -41,8 +41,16 @@ configure_file (
   "generated/tcall_config.h"
   )
 
+if (UNIX AND NOT APPLE)
+	set(OS_FILES src/os_specific/unix/*.cpp)
+elseif (WIN32)
+	set(OS_FILES src/os_specific/win32/*.cpp)
+else ()
+	message( FATAL_ERROR "Unknown operating system. tcall may not have process and dynamic loader implemented for this OS!" )
+endif()
+
 # Find source files
-file(GLOB SOURCES src/*.cpp)
+file(GLOB SOURCES src/*.cpp ${OS_FILES})
 
 # Include header files
 include_directories(src ${CMAKE_CURRENT_BINARY_DIR}/generated)
@@ -57,7 +65,6 @@ target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 # Install executable
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
-
 
 # Testing time
 enable_testing()
