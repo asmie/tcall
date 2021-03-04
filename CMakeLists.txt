@@ -28,9 +28,11 @@ else()
 endif()
 
 # Checking time
+include (CheckIncludeFile)
 include (CheckIncludeFileCXX)
 include (CheckCXXSymbolExists)
 
+check_include_file (ffi.h TCALL_SYSTEM_HAVE_FFI)
 check_include_file_cxx (cstdlib TCALL_SYSTEM_HAVE_CSTDLIB)
 
 check_cxx_symbol_exists (EXIT_SUCCESS cstdlib TCALL_SYSTEM_HAVE_EXIT_SUCCESS)
@@ -58,10 +60,11 @@ include_directories(src ${CMAKE_CURRENT_BINARY_DIR}/generated)
 # Find packages
 # # Threads
 find_package(Threads REQUIRED)
+find_library(libffi REQUIRED)
 
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} Threads::Threads)
+target_link_libraries(${PROJECT_NAME} Threads::Threads ${CMAKE_DL_LIBS} ffi)
 
 # Install executable
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})

@@ -1,9 +1,12 @@
-/*
- * Process.cpp
+/**
+ *  @file   Process.cpp
+ *  @brief  Win32 specific class implementation for using processes.
  *
- *  Created on: 3 mar 2021
- *      Author: asmie
+ *  @author Piotr "asmie" Olszewski
+ *
+ *  @date   2021.03.03
  */
+
 
 
 
