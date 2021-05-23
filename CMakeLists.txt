@@ -60,7 +60,7 @@ include_directories(src ${CMAKE_CURRENT_BINARY_DIR}/generated)
 # Find packages
 # # Threads
 find_package(Threads REQUIRED)
-find_library(libffi REQUIRED)
+#find_library(libffi REQUIRED)
 
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
