@@ -2,7 +2,7 @@
  *  @file   main_tests.cpp
  *  @brief  Main testing file.
  *
- *  @author Piotr Olszewski     piotr.olszewski@transbit.com.pl
+ *  @author Piotr Olszewski     asmie@asmie.pl
  *
  *  @date   2021.05.25
  *
